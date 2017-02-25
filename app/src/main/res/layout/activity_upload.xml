@@ -12,21 +12,21 @@
 
     <ImageView
         android:id="@+id/imgPreview"
-        android:layout_width="fill_parent"
-        android:layout_height="200dp"
-        android:visibility="gone"
-        android:layout_marginTop="15dp"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center"/>
 
     <!-- Videoview to preview recorded video -->
 
-    <VideoView
+<!--    <VideoView
         android:id="@+id/videoPreview"
         android:layout_width="fill_parent"
         android:layout_height="400dp"
         android:visibility="gone"
-        android:layout_marginTop="15dp"/>
+        android:layout_marginTop="15dp"/>-->
 
-    <TextView
+    <!--<TextView
         android:id="@+id/txtPercentage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,15 +34,15 @@
         android:layout_marginBottom="15dp"
         android:layout_marginTop="15dp"
         android:textColor="@color/txt_font"
-        android:textSize="30dp" />
+        android:textSize="30dp" /-->
 
-    <ProgressBar
+<!--    <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="fill_parent"
         android:layout_height="20dp"
         android:layout_marginBottom="35dp"
-        android:visibility="gone"/>
+        android:visibility="gone"/>-->
 
     <Button
         android:id="@+id/btnUpload"

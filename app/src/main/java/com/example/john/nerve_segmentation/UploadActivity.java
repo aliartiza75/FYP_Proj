@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -52,30 +53,29 @@ public class UploadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
 
-        txtPercentage = (TextView) findViewById(R.id.txtPercentage);
-        btnUpload = (Button) findViewById(R.id.btnUpload);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
         imgPreview = (ImageView) findViewById(R.id.imgPreview);
-        vidPreview = (VideoView) findViewById(R.id.videoPreview);
+        //txtPercentage = (TextView) findViewById(R.id.txtPercentage);
+        btnUpload = (Button) findViewById(R.id.btnUpload);
+        //progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        //vidPreview = (VideoView) findViewById(R.id.videoPreview);
 
         // Receiving the data from previous activity
         Intent i = getIntent();
 
         // image or video path that is captured in previous activity
         filePath = i.getStringExtra("filePath");
-
+        Toast.makeText(getApplicationContext(),filePath, Toast.LENGTH_LONG).show();
         // boolean flag to identify the media type, image or video
-        boolean isImage = i.getBooleanExtra("isImage", true);
-
+        //boolean isImage = i.getBooleanExtra("isImage", true);
         if (filePath != null) {
             // Displaying the image or video on the screen
-            previewMedia(isImage);
+            previewMedia(true);
         } else {
             Toast.makeText(getApplicationContext(),
                     "Sorry, file path is missing!", Toast.LENGTH_LONG).show();
         }
 
-        btnUpload.setOnClickListener(new View.OnClickListener() {
+      btnUpload.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -93,7 +93,7 @@ public class UploadActivity extends AppCompatActivity {
         // Checking whether captured media is image or video
         if (isImage) {
             imgPreview.setVisibility(View.VISIBLE);
-            vidPreview.setVisibility(View.GONE);
+            //vidPreview.setVisibility(View.GONE);
             // bimatp factory
             BitmapFactory.Options options = new BitmapFactory.Options();
 
@@ -102,7 +102,7 @@ public class UploadActivity extends AppCompatActivity {
             options.inSampleSize = 8;
 
             final Bitmap bitmap = BitmapFactory.decodeFile(filePath, options);
-
+            //imgPreview.setImageBitmap(new UserPicture(filePath, getContentResolver()).getBitmap());
             imgPreview.setImageBitmap(bitmap);
         } else {
             imgPreview.setVisibility(View.GONE);
@@ -205,7 +205,6 @@ public class UploadActivity extends AppCompatActivity {
         }
 
     } // class end
-
     /**
      * Method to show alert dialog
      * */

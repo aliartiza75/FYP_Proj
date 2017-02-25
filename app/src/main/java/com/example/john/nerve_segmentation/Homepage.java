@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -41,7 +42,7 @@ public class Homepage extends AppCompatActivity {
 
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
-    public ImageView tv;
+    public ImageView Iv;
 
     private Uri fileUri; // file url to store image/video
 
@@ -62,7 +63,7 @@ public class Homepage extends AppCompatActivity {
 
         btnCapturePicture = (Button) findViewById(R.id.btnCapturePicture);
         btnRecordVideo = (Button) findViewById(R.id.btnRecordVideo);
-        tv = (ImageView)findViewById(R.id.textView);
+        Iv = (ImageView)findViewById(R.id.textView);
         /**
          * Capture image button click event
          */
@@ -119,11 +120,8 @@ public class Homepage extends AppCompatActivity {
      */
     private void captureImage() {
         /*Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
         fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
-
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-
         // start the image capture Intent
         startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);*/
 
@@ -157,7 +155,6 @@ public class Homepage extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
         // save file url in bundle as it will be null on screen orientation
         // changes
         outState.putParcelable("file_uri", fileUri);
@@ -166,15 +163,9 @@ public class Homepage extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-
         // get the file url
         fileUri = savedInstanceState.getParcelable("file_uri");
     } //onRestoreInstanceState() end
-
-
-
-
-
     /**
      * Receiving activity result method will be called after closing the camera
      * */
@@ -190,9 +181,14 @@ public class Homepage extends AppCompatActivity {
             try {
                 InputStream inputStream = context.getContentResolver().openInputStream(data.getData());
                 Drawable d = Drawable.createFromStream(inputStream, "src name");
-                tv.setImageDrawable(d);
+                // Image File Path
+                Uri selectedImage = data.getData();
+                String picturePath = ImageFilePath.getPath(this, data.getData());
+
+                Toast.makeText(getApplicationContext(),picturePath, Toast.LENGTH_LONG).show();
+                Iv.setImageDrawable(d);
                 //tv.setImageBitmap(BitmapFactory.decodeStream(inputStream)) ;
-                //launchUploadActivity(true);
+                launchUploadActivity(true,picturePath);
             }
             catch (IOException ee) {
 
@@ -202,10 +198,18 @@ public class Homepage extends AppCompatActivity {
     }
 
 
-    private void launchUploadActivity(boolean isImage){
-        Intent i = new Intent(Homepage.this, UploadActivity.class);
-        i.putExtra("filePath", fileUri.getPath());
-        i.putExtra("isImage", isImage);
+    private void launchUploadActivity(boolean isImage, String path){
+        Intent i = new Intent(this, UploadActivity.class);
+        String s = null;
+        try{
+
+            s     =  path;
+
+        }// try end
+        catch (Exception ee) {
+            s = "No file sent";
+        }
+        i.putExtra("filePath", s);
         startActivity(i);
     } // launchUploadActivity() end
 
@@ -252,5 +256,9 @@ public class Homepage extends AppCompatActivity {
             return null;
         }
         return mediaFile;
-    }
+    } // function end
+
+
+
+
 } // class end
